@@ -1,0 +1,5 @@
+name = Clock Angle
+description = Calculate the angle between the hour and minute hand of a clock.
+package = Epicodus Examples
+core = 7.x
+files[] = clockangle.module

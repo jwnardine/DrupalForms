@@ -1,0 +1,59 @@
+<?php
+
+function clockangle_menu() {
+    $items['clockangle'] = array(
+        'title' => 'Clock Angle Calculator!',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('clockangle_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['clockangle_success_page'] = array(
+        'title' => 'Clock Angle Results!',
+        'page callback' => 'clockangle_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function clockangle_form() {
+    $form['hour'] = array(
+        '#title' => 'Hour value',
+        '#type' => 'textfield',
+        '#description' => t('Enter the hour here'),
+    );
+    $form['minute'] = array(
+        '#title' => 'Minute value',
+        '#type' => 'textfield',
+        '#description' => t('Enter the minute here'),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Click to determine the angle.',
+    );
+    return $form;
+
+}
+
+function clockangle_form_submit($form, &$form_state) {
+
+    $literal_hour = $form_state['values']['hour'];
+    $literal_minute = $form_state['values']['minute'];
+    $hour_degrees = $literal_hour * 30 + $literal_minute / 2;
+    $minute_degrees = ($literal_minute * 6);
+    $clock_angle = abs($hour_degrees - $minute_degrees);
+    if ($clock_angle > 180) {
+        $clock_angle = (360 - $clock_angle);
+    }
+    $_SESSION['angle_output'] = $clock_angle;
+
+    $form_state['redirect'] = 'clockangle_success_page';
+}
+
+
+function clockangle_success() {
+    $answer = $_SESSION['angle_output'];
+    return (string) $answer . '°';
+
+}
