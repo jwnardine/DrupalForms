@@ -2,7 +2,7 @@
 
 function pingpong_menu() {
     $items['pingpong'] = array(
-        'title' = 'Ping Pong!'
+        'title' => 'Ping Pong!',
         'page callback' => 'drupal_get_form',
         'page arguments' => array('pingpong_form'),
         'access callback' => TRUE,
@@ -33,5 +33,29 @@ function pingpong_form() {
 
 function pingpong_form_submit($form, &$form_state) {
     $pingpong_number = $form_state['values']['pingpong_number'];
-    $pingpong result 
+    $pingpong_output = array();
+
+    for ($i=1; $i <= $pingpong_number; $i++) {
+        if ($i % 3 == 0 && $i % 5 == 0) {
+            array_push($pingpong_output, "ping-pong");
+        } elseif ($i % 3 == 0) {
+            array_push($pingpong_output, "ping");
+        } elseif ($i % 5 == 0) {
+            array_push($pingpong_output, "pong");
+        } else {
+            array_push($pingpong_output, $i);
+        }
+    }
+
+    $_SESSION['pingpong_output'] = $pingpong_output;
+    $form_state['redirect'] = 'pingpong_success_page';
+}
+
+function pingpong_success() {
+    $output = '<ul>';
+    foreach ($_SESSION['pingpong_output'] as $value) {
+        $output = $output . '<li>' . $value . '</li>';
+    }
+    $output = $output . '</ul>';
+    return "Horray! $output";
 }
