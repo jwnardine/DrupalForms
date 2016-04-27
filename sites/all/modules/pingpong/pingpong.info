@@ -1,0 +1,5 @@
+name = Ping Pong
+description = Displays a pingpong list.
+package = Epicodus Examples
+core = 7.x
+files[] = pingpong.module

@@ -1,0 +1,37 @@
+<?php
+
+function pingpong_menu() {
+    $items['pingpong'] = array(
+        'title' = 'Ping Pong!'
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('pingpong_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['pingpong_success_page'] = array(
+        'title' => 'Ping Pong Results',
+        'page callback' => 'pingpong_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function pingpong_form() {
+    $form['pingpong_number'] = array(
+        '#title' => 'Enter a number',
+        '#type' => 'textfield',
+        '#description' => t('Please enter a number to pingpong.'),
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Calculate ping pong list!',
+    );
+    return $form;
+}
+
+function pingpong_form_submit($form, &$form_state) {
+    $pingpong_number = $form_state['values']['pingpong_number'];
+    $pingpong result 
+}
