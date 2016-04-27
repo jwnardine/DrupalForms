@@ -1,0 +1,5 @@
+name = Queen Attack
+description = Check to see if the queen has the king in check.
+package = Epicodus Examples
+core = 7.x
+files[] = queenattack.module

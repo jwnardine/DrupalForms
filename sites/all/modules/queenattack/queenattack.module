@@ -1,0 +1,69 @@
+<?php
+
+function queenattack_menu() {
+    $items['queenattack'] = array(
+        'title' => 'Can the queen attack?',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('queenattack_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['queenattack_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'queenattack_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function queenattack_form() {
+    $form['queen_x'] = array(
+        '#title' => 'Queen X-coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter queens X-coordinate'),
+    );
+    $form['queen_y'] = array(
+        '#title' => 'Queen Y-coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter queens Y-coordinate'),
+    );
+    $form['king_x'] = array(
+        '#title' => 'King X-coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter kings X-coordinate'),
+    );
+    $form['king_y'] = array(
+        '#title' => 'King Y-coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter kings Y-coordinate'),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Is the king in check?',
+    );
+    return $form;
+}
+
+function queenattack_form_submit($form, &$form_state) {
+
+    $attack = array();
+    $queen_x = $form_state['values']['queen_x'];
+    $queen_y = $form_state['values']['queen_y'];
+    $king_x = $form_state['values']['king_x'];
+    $king_y = $form_state['values']['king_y'];
+    if (($queen_x === $king_x) || ($queen_y === $king_y) || ((abs($queen_x - $king_x)) === (abs($queen_y - $king_y)))) {
+        array_push($attack, "The king is in check!");
+    }
+    else {
+        array_push($attack, "The king is not in check");
+    };
+    $_SESSION['attack_output'] = $attack;
+
+    $form_state['redirect'] = 'queenattack_success_page';
+}
+
+function queenattack_success() {
+    $answer = $_SESSION['attack_output'];
+    return $answer[0];
+}
