@@ -22,6 +22,7 @@ function pingpong_form() {
         '#title' => 'Enter a number',
         '#type' => 'textfield',
         '#description' => t('Please enter a number to pingpong.'),
+        '#element_validate' => array('element_validate_integer_positive'),
     );
 
     $form['submit'] = array(
