@@ -22,27 +22,41 @@ function queenattack_form() {
         '#title' => 'Queen X-coordinate',
         '#type' => 'textfield',
         '#description' => t('Please enter queens X-coordinate'),
+        '#element_validate' => array('element_validate_onboard'),
+        '#required' => TRUE,
     );
     $form['queen_y'] = array(
         '#title' => 'Queen Y-coordinate',
         '#type' => 'textfield',
         '#description' => t('Please enter queens Y-coordinate'),
+        '#element_validate' => array('element_validate_onboard'),
+        '#required' => TRUE,
     );
     $form['king_x'] = array(
         '#title' => 'King X-coordinate',
         '#type' => 'textfield',
         '#description' => t('Please enter kings X-coordinate'),
+        '#element_validate' => array('element_validate_onboard'),
+        '#required' => TRUE,
     );
     $form['king_y'] = array(
         '#title' => 'King Y-coordinate',
         '#type' => 'textfield',
         '#description' => t('Please enter kings Y-coordinate'),
+        '#element_validate' => array('element_validate_onboard'),
+        '#required' => TRUE,
     );
     $form['submit'] = array(
         '#type' => 'submit',
         '#value' => 'Is the king in check?',
     );
     return $form;
+}
+
+function element_validate_onboard($element) {
+    if ($element['#value'] > 8 || $element['#value'] < 1) {
+        form_error($element, t('Your piece is off the board! Coordinates must be between 1-8'));
+    }
 }
 
 function queenattack_form_submit($form, &$form_state) {
