@@ -1,0 +1,27 @@
+<?php
+
+function rockpaperscissors_menu() {
+    $items['player_1'] = array(
+        'title' => 'Play Paper Rock Scissors',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('rockpaperscissors_player_1_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['player_2'] = array(
+        'title' => 'Play Paper Rock Scissors',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('rockpaperscissors_player_2_form'),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['rockpaperscissors_success_page'] = array(
+        'title' => 'AND THE WINNER IS:',
+        'page callback' => 'rockpaperscissors_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function rockpaperscissors_form
