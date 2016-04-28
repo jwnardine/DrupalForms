@@ -66,7 +66,11 @@ function queenattack_form_submit($form, &$form_state) {
     $queen_y = $form_state['values']['queen_y'];
     $king_x = $form_state['values']['king_x'];
     $king_y = $form_state['values']['king_y'];
-    if (($queen_x === $king_x) || ($queen_y === $king_y) || ((abs($queen_x - $king_x)) === (abs($queen_y - $king_y)))) {
+
+    if (($queen_x === $king_x) && ($queen_y === $king_y))  {
+        array_push($attack, "Your queen is on your king! He is already dead.");
+    }
+    elseif (($queen_x === $king_x) || ($queen_y === $king_y) || ((abs($queen_x - $king_x)) === (abs($queen_y - $king_y)))) {
         array_push($attack, "The king is in check!");
     }
     else {

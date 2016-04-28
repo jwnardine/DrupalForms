@@ -1,0 +1,5 @@
+name = Triangle Tracker
+description = Check if a given triangle is equilateral, isosceles, or scalene.
+package = Epicodus Examples
+core = 7.x
+files[] = triangletracker.module
