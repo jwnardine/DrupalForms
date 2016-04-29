@@ -1,0 +1,73 @@
+<?php
+
+function shifter_menu() {
+  $items['shifter'] = array(
+    'title' => 'Shift your text!',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('shifter_form'),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['shifter_results_page'] = array(
+    'title' => 'Shifter results',
+    'page callback' => 'shifter_results',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function shifter_form() {
+  $form['shift_value'] = array(
+      '#title' => 'How many letters do you want to shift over?!',
+      '#type' => 'textfield',
+      '#description' => t('Enter a number'),
+      '#element_validate' => array('element_validate_integer_positive'),
+      '#required' => TRUE,
+  );
+  $form['shift_direction'] = array(
+      '#title' => 'Which direction would you like to shift?',
+      '#type' => 'textfield',
+      '#description' => t('Enter \'left\' or \'right\''),
+      '#element_validate' => array('element_validate_direction'),
+      '#required' => TRUE,
+  );
+  $form['shift_phrase'] = array(
+      '#title' => 'Enter a phrase!',
+      '#type' => 'textfield',
+      '#description' => t('Enter a phrase'),
+      '#required' => TRUE,
+  );
+  $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Shift it!',
+  );
+  return $form;
+}
+function element_validate_direction($element) {
+    if ((strtolower($element['#value']) != 'left') && (strtolower($element['#value']) != 'right')) {
+        form_error($element, t('Please enter left or right!'));
+    }
+}
+
+
+    function shifter_form_submit($form, &$form_state) {
+        $shifter = array();
+        $shift_value = $form_state['values']['shift_value'];
+        $shift_direction = $form_state['values']['shift_direction'];
+        $shift_phrase = $form_state['values']['shift_phrase'];
+        array_push($shifter, $shift_value);
+        array_push($shifter, $shift_direction);
+        array_push($shifter, $shift_phrase);
+        $_SESSION['shifter_output'] = $shifter;
+        $form_state['redirect'] = 'shifter_results_page';
+    }
+
+  function shifter_results() {
+    $output = '<ul>';
+    foreach ($_SESSION['shifter_output'] as $value) {
+        $output = $output . '<li>' . $value . '</li>';
+    }
+    $output = $output . '</ul>';
+    return "Here are your shifter results! <br> $output";
+  }
