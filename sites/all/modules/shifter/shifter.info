@@ -1,0 +1,5 @@
+name = Shift Cipher
+description = Shift text over!
+package = Epicodus Examples
+core = 7.x
+files[] = shifter.module
