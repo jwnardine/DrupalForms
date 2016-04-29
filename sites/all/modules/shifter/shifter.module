@@ -54,8 +54,8 @@ function element_validate_direction($element) {
     function shifter_form_submit($form, &$form_state) {
 
         $shift_value = $form_state['values']['shift_value'];
-        $shift_direction = $form_state['values']['shift_direction'];
-        $shift_phrase = $form_state['values']['shift_phrase'];
+        $shift_direction = strtolower($form_state['values']['shift_direction']);
+        $shift_phrase = strtolower($form_state['values']['shift_phrase']);
 
         $alphabet = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'
     , 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
@@ -63,26 +63,34 @@ function element_validate_direction($element) {
         $offsets = array_flip($alphabet);
         $phrase_length = count($shift_phrase_split);
 
-        $shifter_result = '';
+        $shift_result = '';
 
         $shift_flip = array_flip($shift_phrase_split);
-
+if ($shift_direction === 'left') {
         for ($i = 0; $i < $phrase_length; $i++) {
 
-          $shifter_result .= $alphabet[($offsets[$shift_phrase_split[$i]]+$shift_value)%26];
+          $shift_result .= $alphabet[($offsets[$shift_phrase_split[$i]]+$shift_value)%26];
         }
+    }
+else {
+    for ($i = 0; $i < $phrase_length; $i++) {
 
-        // $imploded_result = implode($shifter_result);
-        $_SESSION['shifter_output'] = $shifter;
-        $_SESSION['shifter_count'] = $phrase_length;
-        $_SESSION['shift_flip'] = $shift_flip;
-        $_SESSION['shifter_result'] = $shifter_result;
-        // $_SESSION['imploded'] = $imploded_result;
+      $shift_result .= $alphabet[($offsets[$shift_phrase_split[$i]]-$shift_value)%26];
+    }
+}
+
+        $_SESSION['shift_value'] = $shift_value;
+        $_SESSION['shift_direction'] = $shift_direction;
+        $_SESSION['shift_phrase'] = $shift_phrase;
+        $_SESSION['shift_result'] = $shift_result;
         $form_state['redirect'] = 'shifter_results_page';
     }
 
-  function shifter_results() {
+    function shifter_results() {
 
-    $result = $_SESSION['shifter_result'];
-  return 'Your shifted result is ' . $result;
+        $result = $_SESSION['shift_result'];
+        $phrase = $_SESSION['shift_phrase'];
+        $direction = strtolower($_SESSION['shift_direction']);
+        $value = $_SESSION['shift_value'];
+  return 'Phrase you shifted: ' . $phrase . '<br>Direction you shifted: ' . $direction . '<br>How many letters you shifted over: ' . $value . '<br>Your shifted result is <strong>' . $result . '</strong>';
   }
