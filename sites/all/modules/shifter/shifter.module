@@ -36,6 +36,7 @@ function shifter_form() {
       '#title' => 'Enter a phrase!',
       '#type' => 'textfield',
       '#description' => t('Enter a phrase'),
+      '#element_validate' => array('element_validate_phrase'),
       '#required' => TRUE,
   );
   $form['submit'] = array(
@@ -47,6 +48,13 @@ function shifter_form() {
 function element_validate_direction($element) {
     if ((strtolower($element['#value']) != 'left') && (strtolower($element['#value']) != 'right')) {
         form_error($element, t('Please enter left or right!'));
+    }
+}
+
+function element_validate_phrase($form, &$form_state) {
+    $shift_phrase = strtolower($form_state['values']['shift_phrase']);
+    if (!preg_match('/^[a-zA-Z0-9,.!? ]*$/', $shift_phrase)) {
+        form_set_error('shift_phrase', t('Please only include letters, numbers, and regular special characters.'));
     }
 }
 
@@ -69,13 +77,13 @@ function element_validate_direction($element) {
             if ($shift_direction === 'left') {
                 for ($i = 0; $i < $phrase_length; $i++) {
 
-                  $shift_result .= $alphabet[(($offsets[$shift_phrase_split[$i]]-$shift_value)+260) % 26];
+                  $shift_result .= $alphabet[(($offsets[$shift_phrase_split[$i]]-$shift_value)+2600000000000000000) % 26];
                 }
             }
             else {
                 for ($i = 0; $i < $phrase_length; $i++) {
 
-                  $shift_result .= $alphabet[(($offsets[$shift_phrase_split[$i]]+$shift_value)+260) % 26];
+                  $shift_result .= $alphabet[(($offsets[$shift_phrase_split[$i]]+$shift_value)+2600000000000000000) % 26];
                 }
             }
 
@@ -92,5 +100,5 @@ function element_validate_direction($element) {
         $phrase = $_SESSION['shift_phrase'];
         $direction = strtolower($_SESSION['shift_direction']);
         $value = $_SESSION['shift_value'];
-        return (261 % 26) . '<h2>Phrase you shifted: <strong>' . $phrase . '</strong><br>Direction you shifted: <strong>' . $direction . '</strong><br>How many letters you shifted over: <strong>' . $value . '</strong><br>Your shifted result is <strong>' . $result . '</strong></h2>';
+        return '<h2>Phrase you shifted: <strong>' . $phrase . '</strong><br>Direction you shifted: <strong>' . $direction . '</strong><br>How many letters you shifted over: <strong>' . $value . '</strong><br>Your shifted result is <strong>' . $result . '</strong></h2>';
   }
