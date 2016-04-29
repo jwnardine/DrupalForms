@@ -52,22 +52,37 @@ function element_validate_direction($element) {
 
 
     function shifter_form_submit($form, &$form_state) {
-        $shifter = array();
+
         $shift_value = $form_state['values']['shift_value'];
         $shift_direction = $form_state['values']['shift_direction'];
         $shift_phrase = $form_state['values']['shift_phrase'];
-        array_push($shifter, $shift_value);
-        array_push($shifter, $shift_direction);
-        array_push($shifter, $shift_phrase);
+
+        $alphabet = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'
+    , 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+        $shift_phrase_split = str_split($shift_phrase);
+        $offsets = array_flip($alphabet);
+        $phrase_length = count($shift_phrase_split);
+
+        $shifter_result = '';
+
+        $shift_flip = array_flip($shift_phrase_split);
+
+        for ($i = 0; $i < $phrase_length; $i++) {
+
+          $shifter_result .= $alphabet[($offsets[$shift_phrase_split[$i]]+$shift_value)%26];
+        }
+
+        // $imploded_result = implode($shifter_result);
         $_SESSION['shifter_output'] = $shifter;
+        $_SESSION['shifter_count'] = $phrase_length;
+        $_SESSION['shift_flip'] = $shift_flip;
+        $_SESSION['shifter_result'] = $shifter_result;
+        // $_SESSION['imploded'] = $imploded_result;
         $form_state['redirect'] = 'shifter_results_page';
     }
 
   function shifter_results() {
-    $output = '<ul>';
-    foreach ($_SESSION['shifter_output'] as $value) {
-        $output = $output . '<li>' . $value . '</li>';
-    }
-    $output = $output . '</ul>';
-    return "Here are your shifter results! <br> $output";
+
+    $result = $_SESSION['shifter_result'];
+  return 'Your shifted result is ' . $result;
   }
