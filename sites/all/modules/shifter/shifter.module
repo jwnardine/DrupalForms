@@ -53,10 +53,11 @@ function element_validate_direction($element) {
 
 function element_validate_phrase($form, &$form_state) {
     $shift_phrase = strtolower($form_state['values']['shift_phrase']);
-    if (!preg_match('/^[a-zA-Z0-9,.!? ]*$/', $shift_phrase)) {
-        form_set_error('shift_phrase', t('Please only include letters, numbers, and regular special characters.'));
+    if (preg_match('/^[a-zA-Z]*$/', $shift_phrase) == false) {
+        form_set_error($shift_phrase, t('Please only use letters!'));
     }
 }
+skajdasjdliaj
 
 
     function shifter_form_submit($form, &$form_state) {
