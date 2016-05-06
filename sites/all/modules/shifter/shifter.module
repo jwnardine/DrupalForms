@@ -57,8 +57,6 @@ function element_validate_phrase($form, &$form_state) {
         form_set_error($shift_phrase, t('Please only use letters!'));
     }
 }
-skajdasjdliaj
-
 
     function shifter_form_submit($form, &$form_state) {
 
